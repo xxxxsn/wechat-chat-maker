@@ -40,7 +40,7 @@
    仓库 → **Settings** → 左侧 **Pages** → **Source** 选择 **Deploy from a branch**，**Branch** 选 `main`（或你的默认分支），**Folder** 选 `/ (root)`，保存。
 
 3. **等待构建**  
-   几分钟后访问：`https://<你的用户名>.github.io/<仓库名>/` 即可看到项目首页（例如仓库名为 `wxdh`，则地址为 `https://xxx.github.io/wxdh/`）。
+   几分钟后访问：`https://<你的用户名>.github.io/<仓库名>/` 即可看到项目首页（例如仓库名为 `wechat-chat-maker`，则地址为 `https://xxx.github.io/wechat-chat-maker/`）。
 
 4. **自定义域名（可选）**  
    在 **Pages** 设置里填 **Custom domain**（如 `wxdh.xiesn.top`），并在域名服务商处添加 CNAME 解析到 `<用户名>.github.io`，保存后等待生效。
