@@ -4,6 +4,14 @@
 
 ---
 
+## 在线演示
+
+**演示地址**：[https://wxdh.xiesn.top](https://wxdh.xiesn.top)
+
+可直接在浏览器中打开上述链接体验，无需安装。
+
+---
+
 ## 功能简介
 
 - **外观设置**：手机信号、网络类型、电量、时间、听筒模式、聊天标题、背景图等
@@ -19,6 +27,25 @@
 1. 用浏览器直接打开项目根目录下的 `index.html`，或通过任意静态服务器（如 `npx serve .`）访问
 2. 在「外观设置」与「对话设置」中编辑内容
 3. 在右侧手机预览区查看效果，使用「截图保存（最新一屏）」或「截取全部（长图）」导出图片
+
+---
+
+## 部署方式
+
+### GitHub Pages
+
+1. **Fork 或上传本仓库**到你的 GitHub 账号下。
+
+2. **开启 GitHub Pages**  
+   仓库 → **Settings** → 左侧 **Pages** → **Source** 选择 **Deploy from a branch**，**Branch** 选 `main`（或你的默认分支），**Folder** 选 `/ (root)`，保存。
+
+3. **等待构建**  
+   几分钟后访问：`https://<你的用户名>.github.io/<仓库名>/` 即可看到项目首页（例如仓库名为 `wxdh`，则地址为 `https://xxx.github.io/wxdh/`）。
+
+4. **自定义域名（可选）**  
+   在 **Pages** 设置里填 **Custom domain**（如 `wxdh.xiesn.top`），并在域名服务商处添加 CNAME 解析到 `<用户名>.github.io`，保存后等待生效。
+
+本项目为纯静态页面，根目录下的 `index.html` 即为入口，无需构建命令，直接由 GitHub Pages 托管即可。
 
 ---
 
