@@ -6,7 +6,7 @@
 
 ## 在线演示
 
-**演示地址**：[https://wxdh.xiesn.top](https://wxdh.xiesn.top)
+**演示地址**：[https://xxxxsn.github.io/wechat-chat-maker/](https://xxxxsn.github.io/wechat-chat-maker/)
 
 可直接在浏览器中打开上述链接体验，无需安装。
 
