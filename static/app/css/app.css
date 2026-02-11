@@ -1402,6 +1402,39 @@ fieldset[disabled] .radio-custom label {
     flex-shrink: 0;
 }
 
+/* 手机端对话设置：按钮与表单项纵向排列，避免挤乱 */
+@media (max-width: 768px) {
+    .view-setting2 .view-set-item-with-btn {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    .view-setting2 .view-set-item-with-btn .view-set-item-inner {
+        flex-wrap: wrap;
+        width: 100%;
+        gap: 8px;
+    }
+    .view-setting2 .view-set-item-with-btn .view-set-item-inner span {
+        flex: 0 0 auto;
+        width: auto;
+        min-width: 80px;
+    }
+    .view-setting2 .view-set-item-with-btn .dialog-set-btn {
+        width: 100%;
+        margin-top: 0;
+    }
+    .view-setting2 .view-set-item select,
+    .view-setting2 .view-set-item input[type=number],
+    .view-setting2 .view-set-item input[type=text] {
+        min-width: 0;
+        max-width: 100%;
+    }
+    .view-setting2 .view-set-item .form-control {
+        flex: 1 1 auto;
+        min-width: 50px;
+    }
+}
+
 .dialog-user-content-panel.dialog-set-row {
     display: flex;
     flex-direction: column;
