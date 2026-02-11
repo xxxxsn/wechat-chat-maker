@@ -3,6 +3,7 @@
 一款**纯前端**的在线微信聊天对话制作工具，可自定义状态栏、多角色对话、文字/图片/语音/红包/转账等，支持截图保存与长图导出。仅供**学习交流与娱乐**使用。
 
 ---
+<img width="1362" height="916" alt="image" src="https://github.com/user-attachments/assets/68547c8f-44b3-4b26-8d0b-38d8bc05d9c7" />
 
 ## 在线演示
 
