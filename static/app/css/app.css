@@ -1501,7 +1501,7 @@ fieldset[disabled] .radio-custom label {
     padding: 24px;
     box-sizing: border-box;
     /* background: #fff; */
-    border-radius: 12px; 
+    border-radius: 12px;
      /* box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08); */
     overflow: visible;
 }
@@ -1952,7 +1952,7 @@ fieldset[disabled] .radio-custom label {
 .wechat-dialog-right .wechat-dialog-text:after {
     background: #98e970;
     left: auto;
-    right: 4px;
+    right: -10px;
     border-top-right-radius: 4px;
     border-bottom-left-radius: 0;
 }
@@ -2179,6 +2179,143 @@ fieldset[disabled] .radio-custom label {
     display: none
 }
 
+/* 图文链接卡片：标题 + 缩略图 + 底部文案；overflow:visible 才能露出气泡小尾巴 */
+.wechat-dialog-link {
+    padding: 0;
+    min-height: auto;
+    max-width: 720px;
+    min-width: 540px;
+    overflow: visible;
+}
+
+.wechat-dialog-link-top {
+    padding: 30px 34px 18px;
+}
+
+.wechat-dialog-link-title {
+    display: block;
+    font-size: 46px;
+    line-height: 1.45;
+    color: #000;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    min-width: 0;
+}
+
+/* 图文内容在缩略图左侧，多行超出显示... */
+.wechat-dialog-link-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 16px;
+}
+
+.wechat-dialog-link-content {
+    flex: 1;
+    min-width: 0;
+    font-size: 36px;
+    line-height: 1.45;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.wechat-dialog-link-thumb {
+    position: relative;
+    flex-shrink: 0;
+    width: 150px;
+    height: 150px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f0f0f0;
+}
+
+.wechat-dialog-link-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 图片底部约二分之一白色半透明遮罩 */
+.wechat-dialog-link-thumb::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 5%;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.11), transparent);
+    pointer-events: none;
+}
+
+.wechat-dialog-link-footer {
+    display: flex;
+    align-items: center;
+    padding: 12px 28px 24px;
+    font-size: 32px;
+    color: #8c8c8c;
+    border-top: 1px solid rgba(0, 0, 0, 0.08); /* 横线：与上方区域分隔，视觉上直达图片底部右侧 */
+}
+
+.wechat-dialog-link-arrow {
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 12px solid #8c8c8c;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.wechat-dialog-link-footer-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+    flex-shrink: 0;
+    object-fit: cover;
+    background: #fff;
+}
+
+.wechat-dialog-link-footer span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 自己发的图文消息与对方一致：白色气泡 + 白色小三角 */
+.wechat-dialog-right .wechat-dialog-link {
+    background: #fff;
+}
+
+.wechat-dialog-right .wechat-dialog-link:after {
+    background: #fff;
+}
+
+.wechat-dialog-right .wechat-dialog-link-title {
+    color: #000;
+}
+
+.wechat-dialog-right .wechat-dialog-link-footer {
+    color: #8c8c8c;
+    border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+.wechat-dialog-right .wechat-dialog-link-thumb::after {
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.75), transparent);
+}
+
+.wechat-dialog-right .wechat-dialog-link-footer-icon,
+.wechat-dialog-right .wechat-dialog-link-arrow {
+    border-left-color: #8c8c8c;
+}
+
 .wechat-dialog-voice {
     display: flex;
     align-items: center
@@ -2216,6 +2353,12 @@ fieldset[disabled] .radio-custom label {
     text-align: right;
     padding-left: 20px;
     padding-right: 0
+}
+
+.link-image-preview {
+    margin-left: 8px;
+    font-size: 14px;
+    color: #5cb85c;
 }
 
 .dialog-user {

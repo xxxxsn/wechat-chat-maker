@@ -19,8 +19,41 @@
 	<link rel="stylesheet" href="static/app/css/app.css">
 	<link rel="stylesheet" href="static/app/css/wallet.css">
 	<script type="text/javascript" src="static/app/js/common.bundle.js"></script>
+	<!-- 在 chat.bundle.js 前注入 localforage 兼容层，避免 mounted 时报 localforage is not defined（用 localStorage 实现） -->
+	<script type="text/javascript">
+		(function () {
+			function noop() { return Promise.resolve(); }
+			function get(key) {
+				try {
+					var raw = localStorage.getItem(key);
+					if (raw === null) return Promise.resolve(null);
+					try { return Promise.resolve(JSON.parse(raw)); } catch (e) { return Promise.resolve(raw); }
+				} catch (e) { return Promise.reject(e); }
+			}
+			function set(key, value) {
+				try {
+					localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value));
+					return Promise.resolve();
+				} catch (e) { return Promise.reject(e); }
+			}
+			function remove(key) {
+				try { localStorage.removeItem(key); return Promise.resolve(); } catch (e) { return Promise.reject(e); }
+			}
+			window.localforage = {
+				getItem: get,
+				setItem: set,
+				removeItem: remove,
+				clear: function () { try { localStorage.clear(); return Promise.resolve(); } catch (e) { return Promise.reject(e); } },
+				length: function () { return Promise.resolve(localStorage.length); },
+				key: function (n) { return Promise.resolve(localStorage.key(n)); },
+				keys: function () { return Promise.resolve(Object.keys(localStorage)); },
+				iterate: function () { return Promise.resolve(); }
+			};
+		})();
+	</script>
 	<script type="text/javascript" src="static/app/js/chat.bundle.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="static/app/js/extend.js"></script>
+	<script src="static/app/js/html2canvas.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
 	<div id="vueApp" class="wrapper">
@@ -31,6 +64,7 @@
 					<ul class="nav nav-tabs">
 						<li class="active"><a data-tab href="#tabContent1">外观设置</a></li>
 						<li><a data-tab href="#tabContent2">对话设置</a></li>
+						<li><a data-tab href="#tabContent3">图文链接分享</a></li>
 					</ul>
 					<div class="tab-content">
 						<div class="tab-pane active" id="tabContent1">
@@ -258,6 +292,56 @@
 								</div>
 							</div>
 						</div>
+						<!-- 图文链接分享：与外观设置、对话设置平级 -->
+						<div class="tab-pane" id="tabContent3">
+							<div class="view-setting">
+								<template v-if="setting._linkReady">
+									<div class="view-set-item view-set-item-with-btn">
+										<div class="view-set-item-inner">
+											<span>图文标题：</span>
+											<input v-model="setting.dialog_link_title" type="text"
+												class="form-control" placeholder="如：唯一艺术NFR姑胖熊全民迎春启动!">
+										</div>
+									</div>
+									<div class="view-set-item view-set-item-with-btn">
+										<div class="view-set-item-inner">
+											<span>图文内容：</span>
+											<input v-model="setting.dialog_link_content" type="text"
+												class="form-control" placeholder="如：要闻|权威|有价值 每天一分钟,知晓天下事!">
+										</div>
+									</div>
+									<div class="view-set-item view-set-item-with-btn">
+										<div class="view-set-item-inner">
+											<span>图文缩略图：</span>
+											<label class="btn btn-default btn-sm" style="margin-bottom:0">选择图片
+												<input type="file" accept="image/*" style="display:none"
+													onchange="window.__onLinkImageChange && window.__onLinkImageChange(event)">
+											</label>
+											<span v-if="setting.dialog_link_image" class="link-image-preview">已选图</span>
+										</div>
+									</div>
+									<div class="view-set-item view-set-item-with-btn">
+										<div class="view-set-item-inner">
+											<span>底部文案：</span>
+											<input v-model="setting.dialog_link_footer" type="text"
+												class="form-control" placeholder="如：姑胖熊俱乐部">
+										</div>
+									</div>
+									<div class="view-set-item view-set-item-with-btn">
+										<div class="view-set-item-inner">
+											<span>底部图标：</span>
+											<label class="btn btn-default btn-sm" style="margin-bottom:0">选择图标
+												<input type="file" accept="image/*" style="display:none"
+													onchange="window.__onLinkFooterIconChange && window.__onLinkFooterIconChange(event)">
+											</label>
+											<span v-if="setting.dialog_link_footer_icon" class="link-image-preview">已选图标</span>
+										</div>
+										<button type="button" class="btn btn-primary dialog-set-btn"
+											onclick="window.__addLinkDialog && window.__addLinkDialog()">添加图文对话</button>
+									</div>
+								</template>
+							</div>
+						</div>
 					</div>
 				</div>
 				<!-- phone -->
@@ -361,6 +445,22 @@
 													<span
 														:class="[{'wechat-dialog-notice-has-bg':setting.background != ''},{'wechat-dialog-notice-system':dialog.is_system}]"
 														v-html="dialog.content"></span>
+												</div>
+											</template>
+
+											<template v-if="dialog.type == 'link'">
+												<div class="wechat-dialog-text wechat-dialog-link">
+													<div class="wechat-dialog-link-top">
+														<div class="wechat-dialog-link-title">{{ linkTruncate(dialog.title, 26) }}</div>
+														<div class="wechat-dialog-link-body">
+															<div v-if="dialog.link_content" class="wechat-dialog-link-content">{{ linkTruncate(dialog.link_content, 50) }}</div>
+															<div v-if="dialog.image" class="wechat-dialog-link-thumb"><img :src="dialog.image" alt=""></div>
+														</div>
+													</div>
+													<div v-if="dialog.footer" class="wechat-dialog-link-footer">
+														<img v-if="dialog.footer_icon" :src="dialog.footer_icon" alt="" class="wechat-dialog-link-footer-icon">
+														<span>{{dialog.footer}}</span>
+													</div>
 												</div>
 											</template>
 
